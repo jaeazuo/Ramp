@@ -1,0 +1,16 @@
+/* A table with columns containing transaction_time and transaction_amount is provided, we want to know the rolling 3-day average transaction amount */
+
+SELECT 
+    DATE("transaction_time") AS transaction_date,
+    AVG("transaction_amount") OVER (
+        ORDER BY DATE("transaction_time") 
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS rolling_avg_amount
+FROM 
+    transactions
+WHERE 
+    EXTRACT(MONTH FROM "transaction_time") = 1
+AND 
+    EXTRACT(YEAR FROM "transaction_time") = 2021
+ORDER BY 
+    transaction_date;
